@@ -1,4 +1,4 @@
 [Project]
-Manager=KDevGenericManager
+Manager=KDevCMakeManager
 Name=RobotArm
 VersionControl=
