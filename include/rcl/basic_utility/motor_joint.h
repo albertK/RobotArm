@@ -1,3 +1,6 @@
+#ifndef MOTORJOINT
+#define MOTORJOINT
+
 #include <vector>
 
 #include "rcl/interface/robot_arm.h"
@@ -85,3 +88,5 @@ namespace rcl
 
     };
 };
+
+#endif

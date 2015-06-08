@@ -9,32 +9,30 @@ namespace rcl
     {
 	struct Common
 	{
-	    float sampling_time;
-	    float dof;
-	};
-	
-	struct Mechanism
-	{
-
+	    static int sampling_time = 1;//ms
+	    static const int dof = 7;
+	    static const int dof_lc = dof*(dof-1)/2;//for dynamics coriolis term
 	};
 	
 	struct MotorJoint
 	{
-	    std::vector<float> p_min;
-	    std::vector<float> p_max;
-	    std::vector<float> v_min;
-	    std::vector<float> v_max;
-	    std::vector<float> t_min;
-	    std::vector<float> t_max;
+	    //joint limit
+	    static std::vector<float> p_min;
+	    static std::vector<float> p_max;
+	    static std::vector<float> v_min;
+	    static std::vector<float> v_max;
+	    static std::vector<float> t_min;
+	    static std::vector<float> t_max;
 	    
-	    std::vector<float> pp;
-	    std::vector<float> pi;
-	    std::vector<float> pd;
-	    std::vector<float> vp;
-	    std::vector<float> vi;
-	    std::vector<float> vd;
+	    //controller PID parameters
+	    static std::vector<float> pp;
+	    static std::vector<float> pi;
+	    static std::vector<float> pd;
+	    static std::vector<float> vp;
+	    static std::vector<float> vi;
+	    static std::vector<float> vd;
 	    
-	    std::vector<float> gear_ratio;
+	    static std::vector<float> gear_ratio;
 	};
     };
 };
