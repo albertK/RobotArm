@@ -13,7 +13,7 @@ namespace rcl
 	RobotArm* root_;
 	
 	//motor control mode
-	uchar mode_;
+	char mode_;
 	
 	//reference position for each joint. in degree
 	std::vector<float> home_;
@@ -28,6 +28,7 @@ namespace rcl
 	std::vector<float> current_vel_;
 	std::vector<float> current_torq_;
     public:
+	MotorJoint();//do not use this default constructor
 	MotorJoint(RobotArm* root);
 	
 	/*

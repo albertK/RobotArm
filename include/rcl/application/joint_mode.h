@@ -20,6 +20,13 @@ namespace rcl
 	//to see if the robot have reached the final target
 	bool target_reached_;
     public:
+	//inherited member functions from the class Skill.
+	virtual void startSkill();
+	virtual void stopSkill();
+	virtual void updateSkill();
+	virtual void init();
+	virtual void quit();
+	
 	//the robot start the motion only after the call of this function
 	void startMotion();
 	

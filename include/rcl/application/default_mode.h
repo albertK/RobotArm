@@ -7,6 +7,11 @@ namespace rcl
 {
     class DefaultMode : public Skill
     {
+	virtual void startSkill();
+	virtual void stopSkill();
+	virtual void updateSkill();
+	virtual void init();
+	virtual void quit();
     };
 };
 

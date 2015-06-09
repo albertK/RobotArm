@@ -9,7 +9,7 @@ namespace rcl
     {
 	struct Common
 	{
-	    static int sampling_time = 1;//ms
+	    static const int sampling_time = 1;//ms
 	    static const int dof = 7;
 	    static const int dof_lc = dof*(dof-1)/2;//for dynamics coriolis term
 	};

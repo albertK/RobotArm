@@ -22,11 +22,11 @@ namespace rcl
 	Eigen::Vector3f current_eef_position_;
 	Eigen::Vector3f current_eef_orientation_;
 	Eigen::Vector4f current_eef_quaternion_;
-	Eigen::Matrix<float, 6, parameters::Common::dof> jacobian_;
+	Eigen::Matrix<float, 6, Parameters::Common::dof> jacobian_;
 	
-	Eigen::Matrix<float, 6, parameters::Common::dof> mass_;
-	Eigen::Matrix<float, 6, parameters::Common::dof> centrifugal_;
-	Eigen::Matrix<float, 6, parameters::Common::dof_lc> coriolis_;
+	Eigen::Matrix<float, 6, Parameters::Common::dof> mass_;
+	Eigen::Matrix<float, 6, Parameters::Common::dof> centrifugal_;
+	Eigen::Matrix<float, 6, Parameters::Common::dof_lc> coriolis_;
 	std::vector<float> gravity_;
 	
 	std::vector<float> target_joint_position_;
@@ -39,6 +39,7 @@ namespace rcl
 	
     
     public:
+	RobotStates();//do not use this default constructor
 	RobotStates(RobotArm* root);
 	std::vector<float> getCurrentJointPposition();
 	std::vector<float> getCurrentJointVelocity();
@@ -48,11 +49,11 @@ namespace rcl
 	Eigen::Vector3f getCurrentEEFPosition();
 	Eigen::Vector3f getCurrentEEFOrientation();
 	Eigen::Vector4f getCurrentEEFQuaternion();
-	Eigen::Matrix<float, 6, parameters::Common::dof> getJacobian();
+	Eigen::Matrix<float, 6, Parameters::Common::dof> getJacobian();
 	
-	Eigen::Matrix<float, 6, parameters::Common::dof> getMass();
-	Eigen::Matrix<float, 6, parameters::Common::dof> getCentrifugal();
-	Eigen::Matrix<float, 6, parameters::Common::dof_lc> getCoriolis();
+	Eigen::Matrix<float, 6, Parameters::Common::dof> getMass();
+	Eigen::Matrix<float, 6, Parameters::Common::dof> getCentrifugal();
+	Eigen::Matrix<float, 6, Parameters::Common::dof_lc> getCoriolis();
 	std::vector<float> getGravity();
 	
 	std::vector<float> getTargetJointPosition();
