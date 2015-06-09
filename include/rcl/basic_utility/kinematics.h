@@ -5,7 +5,7 @@
 
 #include <eigen3/Eigen/Dense>
 
-#include "rcl/hardware/parameters.h"
+#include "rcl/common/parameters.h"
 
 namespace rcl
 {

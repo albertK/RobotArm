@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "rcl/interface/robot_arm.h"
+#include "rcl/common/robot_arm.h"
 
 namespace rcl
 {
