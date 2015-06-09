@@ -5,7 +5,7 @@
 
 namespace rcl
 {
-    namespace parameters
+    namespace Parameters
     {
 	struct Common
 	{
