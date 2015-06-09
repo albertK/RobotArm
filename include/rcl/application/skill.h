@@ -14,6 +14,8 @@ namespace rcl
 	virtual void startSkill() = 0;
 	virtual void stopSkill() = 0;
 	virtual void updateSkill() = 0;
+	virtual void init() = 0;
+	virtual void quit() = 0;
     };
 };
 
