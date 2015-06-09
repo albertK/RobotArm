@@ -5,7 +5,7 @@
 
 namespace rcl
 {
-    class AO
+    class AnalogOutput
     {
     protected:
 	//opened device ID
