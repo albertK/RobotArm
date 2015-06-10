@@ -1,6 +1,9 @@
 #ifndef CARTESIANMODE
 #define CARTESIANMODE
 
+#include <vector>
+#include <queue>
+
 #include <eigen3/Eigen/Dense>
 
 #include "rcl/application/skill.h"
