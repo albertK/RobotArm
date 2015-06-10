@@ -30,10 +30,10 @@ namespace rcl
 	//the robot start the motion only after the call of this function
 	void startMotion();
 	
-	//the robot pause its motion when the call of this function. the commanded targets will not be cleaned. call startMotion() again if the user want to resume the motion.
+	//the robot pause its motion once this function is called. the commanded targets will NOT be cleaned. call startMotion() again if the user want to resume the motion.
 	void pauseMotion();
 	
-	//the robot stop tits motion immediately and stay still afte the call of this function. any commanded targets will be cleaned.
+	//the robot stop its motion immediately and stay still once this function is called. any commanded targets will be cleaned.
 	void stopMotion();
 	
 	//push and append the absolute taget in a queue
