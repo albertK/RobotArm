@@ -10,14 +10,12 @@ namespace rcl
     class Skill
     {
     protected:
-	RobotArm* root;
+	RobotArm* root_;
     public:
-	Skill();//do not use this default constructor
-	Skill(RobotArm* root);
 	virtual void startSkill();
 	virtual void stopSkill();
 	virtual void updateSkill();
-	virtual void init();
+	virtual void init(RobotArm* root);
 	virtual void quit();
     };
 };

@@ -10,7 +10,7 @@ namespace rcl
 	virtual void startSkill();
 	virtual void stopSkill();
 	virtual void updateSkill();
-	virtual void init();
+	virtual void init(RobotArm* root);
 	virtual void quit();
     };
 };
