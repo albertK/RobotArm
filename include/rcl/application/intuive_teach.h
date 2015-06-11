@@ -1,6 +1,8 @@
 #ifndef INTUIVETEACH
 #define INTUIVETEACH
 
+#include <string>
+
 #include "rcl/application/skill.h"
 #include "rcl/application/free_mode.h"
 #include "rcl/application/translation_mode.h"
@@ -13,6 +15,7 @@ namespace rcl
     class IntuiveTeach : public Skill
     {
     protected:
+	std::string mode_;
     public:
 	//inherited member functions from the class Skill.
 	virtual void startSkill();
@@ -21,7 +24,14 @@ namespace rcl
 	virtual void init(RobotArm* root);
 	virtual void quit();
 	
-	changeTeachMode();
+	/* change different teach mode
+	 * free: free mode
+	 * trans: translation mode
+	 * rot: rotation mode
+	 * line: linear mode
+	 * plane: planar mode
+	 */
+	void changeTeachMode(std::string mode);
 	
 	Skill* skill;
 	FreeMode free_mode;
