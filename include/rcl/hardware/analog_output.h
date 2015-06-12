@@ -19,7 +19,7 @@ namespace rcl
 	 * initialize the ao communication interface card
 	 * card: interface card device name
 	 */
-	void init();
+	bool init();
 	
 	/*
 	 * set the output voltage
