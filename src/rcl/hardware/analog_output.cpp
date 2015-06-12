@@ -30,7 +30,13 @@ void rcl::AnalogOutput::quit()
 
 void rcl::AnalogOutput::setVoltage(float voltage, int channel)
 {
-    voltage_.at(channel) = voltage;
+    if(voltage > 10)
+	voltage_.at(channel) = 10;
+    else if(voltage < -10)
+	voltage_.at(channel) = -10;
+    else
+	voltage_.at(channel) = voltage;
+    
     PIODA_AnalogOutputCalVoltage(card_, channel, voltage_.at(channel));
 }
 
