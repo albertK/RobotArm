@@ -9,5 +9,10 @@ set(DAQ_LINK_LIB pio_64)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include ${DAQ_INCLUDE_DIR})
 link_directories(${DAQ_LINK_DIR})
 
+#build the library AnalogOutput
+add_library(AnalogOutput ${CMAKE_CURRENT_SOURCE_DIR}/src/rcl/hardware/analog_output.cpp)
+target_link_libraries(AnalogOutput ${DAQ_LINK_LIB})
+
+#build the executable
 add_executable(test src/test/test.cpp)
-target_link_libraries(test ${DAQ_LINK_LIB})
+target_link_libraries(test AnalogOutput)
