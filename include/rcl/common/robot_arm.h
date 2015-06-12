@@ -46,19 +46,19 @@ namespace rcl
 	//release resources, do garbage collection. call when exit the program
 	void quit();
 	
-	Skill* skill;
-	DefaultMode default_mode;
-	JointMode joint_mode;
-	CartesianMode cartesian_mode;
-	IntuiveTeach intuive_teach;
+	//Skill* skill;
+	//DefaultMode default_mode;
+	//JointMode joint_mode;
+	//CartesianMode cartesian_mode;
+	//IntuiveTeach intuive_teach;
 	
-	RobotStates robot_states;
-	MotorJoint motor_joint;
-	Kinematics kinematics;
-	Dynamics dynamics;
+	//RobotStates robot_states;
+	//MotorJoint motor_joint;
+	//Kinematics kinematics;
+	//Dynamics dynamics;
 	
 	AnalogOutput ao;
-	Encoder encoder;
+	//Encoder encoder;
     };
 };
 
