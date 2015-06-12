@@ -2,6 +2,7 @@
 #define AO
 
 #include <string>
+#include <vector>
 
 namespace rcl
 {
@@ -12,13 +13,13 @@ namespace rcl
 	int card_;
 	
 	//output voltage
-	float voltage_;
+	std::vector<float> voltage_;
     public:
 	/*
 	 * initialize the ao communication interface card
 	 * card: interface card device name
 	 */
-	void init(std::string card);
+	void init();
 	
 	/*
 	 * set the output voltage
