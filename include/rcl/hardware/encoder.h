@@ -7,7 +7,8 @@ namespace rcl
     {
     protected:
 	//interface card ID number
-	int card_;
+	int card_0_;
+	int card_1_;
     public:
 	/*
 	 * initialize the encoder interface card
@@ -17,10 +18,13 @@ namespace rcl
 	 * 	 c=CW/CCW counting mode
 	 * 	 d=Pulse/Direction counting mode
 	 */
-	void init(int card, char mode);
+	bool init(int card, char mode);
 	
-	//get the encoder count
-	int getCount();
+	/*
+	 * get the encoder count
+	 * channel: range from 0 ~ DoF-1
+	 */
+	long getCount(int channel);
 	
 	//release resources, do garbage collection. call when exit the program
 	void quit();
