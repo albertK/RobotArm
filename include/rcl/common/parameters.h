@@ -2,19 +2,26 @@
 #define PARAMETERS
 
 #include <vector>
+#include <string>
 
 namespace rcl
 {
     namespace Parameters
     {
-	struct Common
+	namespace Common
 	{
 	    static const int sampling_time = 1;//ms
 	    static const int dof = 7;
 	    static const int dof_lc = dof*(dof-1)/2;//for dynamics coriolis term
 	};
 	
-	struct MotorJoint
+	namespace CommunicationInterface
+	{
+	    static const std::string ao_dev = "/dev/ixpio3";
+	    static const int channel = 8;
+	};
+	
+	namespace MotorJoint
 	{
 	    //joint limit
 	    static std::vector<float> p_min;
