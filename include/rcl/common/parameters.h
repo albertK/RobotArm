@@ -12,43 +12,43 @@ namespace rcl
     {
 	namespace Common
 	{
-	    const int sampling_time = 1;//ms
-	    const int dof = 7;
-	    const int dof_lc = dof*(dof-1)/2;//for dynamics coriolis term
+	    static const int sampling_time = 1;//ms
+	    static const int dof = 7;
+	    static const int dof_lc = dof*(dof-1)/2;//for dynamics coriolis term
 	};
 	
 	namespace CommunicationInterface
 	{
 	    //device name of analog output card.
-	    const std::string ao_dev = "/dev/ixpio3";
-	    const int channel = 8;
+	    static const std::string ao_dev = "/dev/ixpio3";
+	    static const int channel = 8;
 	    
 	    //6-axis encoder card
-	    const int enc_card_0 = 0;
+	    static const int enc_card_0 = 0;
 	    //3-axis encoder card
-	    const int enc_card_1 = 1;
-	    const int mode = ENC_QUADRANT;
+	    static const int enc_card_1 = 1;
+	    static const int mode = ENC_QUADRANT;
 	};
 	
 	namespace MotorJoint
 	{
 	    //joint limit
-	    std::vector<float> p_min;
-	    std::vector<float> p_max;
-	    std::vector<float> v_min;
-	    std::vector<float> v_max;
-	    std::vector<float> t_min;
-	    std::vector<float> t_max;
+	    static std::vector<float> p_min;
+	    static std::vector<float> p_max;
+	    static std::vector<float> v_min;
+	    static std::vector<float> v_max;
+	    static std::vector<float> t_min;
+	    static std::vector<float> t_max;
 	    
 	    //controller PID parameters
-	    std::vector<float> pp;
-	    std::vector<float> pi;
-	    std::vector<float> pd;
-	    std::vector<float> vp;
-	    std::vector<float> vi;
-	    std::vector<float> vd;
+	    static std::vector<float> pp;
+	    static std::vector<float> pi;
+	    static std::vector<float> pd;
+	    static std::vector<float> vp;
+	    static std::vector<float> vi;
+	    static std::vector<float> vd;
 	    
-	    std::vector<float> gear_ratio;
+	    static std::vector<float> gear_ratio;
 	};
     };
 };
