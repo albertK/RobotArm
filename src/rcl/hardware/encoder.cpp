@@ -1,20 +1,23 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "msw-enc600.h"
 
 #include "rcl/hardware/encoder.h"
 #include "rcl/common/parameters.h"
 
-bool rcl::Encoder::init(int card, char mode)
+bool rcl::Encoder::init()
 {
     card_0_ = rcl::Parameters::CommunicationInterface::enc_card_0;
     card_1_ = rcl::Parameters::CommunicationInterface::enc_card_1;
+    mode_ = rcl::Parameters::CommunicationInterface::mode;
     
     if(ENC6_REGISTRATION(card_0_, 0) && ENC6_REGISTRATION(card_1_, 0) != SUCCESS)
     {
 	return false;
     }
     
-    ENC6_INIT_CARD(card_0_, mode, mode, mode, mode, mode, mode);
-    ENC6_INIT_CARD(card_1_, mode, mode, mode, mode, mode, mode);
+    ENC6_INIT_CARD(card_0_, mode_, mode_, mode_, mode_, mode_, mode_);
+    ENC6_INIT_CARD(card_1_, mode_, mode_, mode_, mode_, mode_, mode_);
     
     ENC6_RESET_ENCODER(card_0_, X1_axis);
     ENC6_RESET_ENCODER(card_0_, X2_axis);
@@ -26,6 +29,8 @@ bool rcl::Encoder::init(int card, char mode)
     ENC6_RESET_ENCODER(card_1_, X1_axis);
     ENC6_RESET_ENCODER(card_1_, X2_axis);
     ENC6_RESET_ENCODER(card_1_, X3_axis);
+    
+    return true;
 }
 
 void rcl::Encoder::quit()

@@ -9,16 +9,12 @@ namespace rcl
 	//interface card ID number
 	int card_0_;
 	int card_1_;
+	
+	//encoder mode
+	int mode_;
     public:
-	/*
-	 * initialize the encoder interface card
-	 * card: interface card ID number
-	 * mode: working mode
-	 * 	 q=Quadrant-counting mode
-	 * 	 c=CW/CCW counting mode
-	 * 	 d=Pulse/Direction counting mode
-	 */
-	bool init(int card, char mode);
+	//initialize the encoder interface card
+	bool init();
 	
 	/*
 	 * get the encoder count

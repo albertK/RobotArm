@@ -27,6 +27,8 @@ namespace rcl
 	    static const int enc_card_0 = 0;
 	    //3-axis encoder card
 	    static const int enc_card_1 = 1;
+	    
+	    //encoder mode
 	    static const int mode = ENC_QUADRANT;
 	};
 	
