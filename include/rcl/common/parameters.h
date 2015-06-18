@@ -49,8 +49,16 @@ namespace rcl
 	    static std::vector<float> vp;
 	    static std::vector<float> vi;
 	    static std::vector<float> vd;
+	    //TODO
+	    static float accu_max;
 	    
-	    static std::vector<float> gear_ratio;
+	    //TODO unit?
+	    static float torq_const[] = {0.0385, 0.0385, 0.0302, 0.0302, 0.0259, 0.0259, 0.0208};
+	    
+	    static int enc_count[] = {2000, 2000, 2000, 2000, 2000, 2000, 2000};
+	    static int gear_ratio[] = {483, 483, 404, 404, 404, 404, 204};
+	    //reference position for each joint. in degree
+	    static float home[] = {0.0, -90.0, 0.0, 180.0, 0.0, 0.0, 0.0};
 	};
     };
 };

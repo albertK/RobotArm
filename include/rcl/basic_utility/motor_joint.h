@@ -15,36 +15,41 @@ namespace rcl
     protected:
 	RobotArm* root_;
 	
-	//motor control mode
-	char mode_;
+	//degree of freedom
+	int dof_;
 	
 	//reference position for each joint. in degree
 	std::vector<float> home_;
 	
+	//motor control mode
+	char mode_;
+	
+	//accumulation of PID integrator
+	std::vector<float> accumulator_;
+	
+	//joint degree per motor count
+	std::vector<float> reduction_ratio_;
+	
 	//target position command
-	std::vector<float> target_pos_;
-	std::vector<float> target_vel_;
-	std::vector<float> target_torq;
+	std::vector<float> target_pos_;//in deg
+	std::vector<float> target_vel_;//in deg/s
+	std::vector<float> target_torq_;//TODO unit?
 	
 	//current position read from encoder
-	std::vector<float> current_pos_;
-	std::vector<float> current_vel_;
-	std::vector<float> current_torq_;
+	std::vector<float> current_pos_;//in deg
+	std::vector<float> current_vel_;//in deg/s
+	std::vector<float> current_torq_;//TODO unit?
     public:
-	MotorJoint();//do not use this default constructor
+	MotorJoint(){}//do not use this default constructor
 	MotorJoint(RobotArm* root);
 	
 	/*
-	 * initialize the robot
-	 * home: the reference position. in degree
+	 * initialize necessary parameters
 	 */
-	void init(std::vector<float> home);
+	void init();
 	
 	//calculate and send the command through communication interface
 	void update();
-	
-	//release each motor. set the output torque of each joint to zero
-	void release();
 	
 	//halt each motor. the motor should stop at its current position immediately
 	void halt();
@@ -62,14 +67,15 @@ namespace rcl
 	
 	/*
 	 * set target position for each joint
+	 * WARNING the programmer should check the pos and torq limit by themselves
 	 * pos: target position for each joint. in degree
-	 * ff_vel: feedforward velocity for each joint. in degree/sec
 	 * ff_torq: feedforward torque for each joint. in mN
 	 */
-	void setTargetPosition(std::vector<float> pos, std::vector<float> ff_vel, std::vector<float> ff_torq);
+	void setTargetPosition(std::vector<float> pos, std::vector<float> ff_torq);
 	
 	/*
 	 * set target velocity for each joint
+	 * WARNING the programmer should check the pos, vel and torq limit by themselves
 	 * vel: target velocity for each joint. in degree/sec
 	 * ff_torq: feedforward torque for each joint.  in mN
 	 */
@@ -77,6 +83,7 @@ namespace rcl
 	
 	/*
 	 * set target torque for each joint
+	 * WARNING the programmer should check the pos and torq limit by themselves
 	 * torq: target torque for each joint.  in mN
 	 */
 	void setTargetTorque(std::vector<float> torq);
