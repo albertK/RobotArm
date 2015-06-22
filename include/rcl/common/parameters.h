@@ -12,7 +12,7 @@ namespace rcl
     {
 	namespace Common
 	{
-	    static const int sampling_time = 1;//ms
+	    static const float sampling_time = 0.001;//s
 	    static const int dof = 7;
 	    static const int dof_lc = dof*(dof-1)/2;//for dynamics coriolis term
 	};
@@ -45,21 +45,30 @@ namespace rcl
 	    static std::vector<float> t_min;
 	    static std::vector<float> t_max;
 	    
+	    //TODO tune the PID parameters
 	    //controller PID parameters
-	    static std::vector<float> pp;
-	    static std::vector<float> pi;
-	    static std::vector<float> pd;
-	    static std::vector<float> vp;
-	    static std::vector<float> vi;
-	    static std::vector<float> vd;
-	    //TODO
-	    static float accu_max;
+	    //static const float position_p[] = {0.00020, 0.00025, 0.00015, 0.00020, 0.00015, 0.00030, 0.00004};
+	    static const float position_PID_P[] = {0.06, 0.06, 0.04, 0.05, 0.03, 0.04, 0.02};
+	    static const float position_PID_I2P[] = {0.0050, 0.0060, 0.0030, 0.0060, 0.0020, 0.0030, 0.0010};
+	    static const float position_PID_D2P[] = {0.100, 0.100, 0.100, 0.100, 0.100, 0.100, 0.100};
 	    
-	    //torque constant. in mNm/A
+	    static const float velocity_p[] = {0.012, 0.012, 0.008, 0.010, 0.004, 0.005, 0.002};
+	    static const float velocity_i2p[] = {0.0060, 0.0080, 0.0030, 0.0050, 0.0008, 0.0010, 0.0008};
+	    
+	    //torque constant. in Nm/A
 	    static const float torq_const[] = {0.0385, 0.0385, 0.0302, 0.0302, 0.0259, 0.0259, 0.0208};
 	    
 	    //maximun allowable current for each motor. in A
 	    static const float max_current[] = {10.0, 10.0, 6.0, 6.0, 3.5, 3.5, 1.5};
+	    
+	    //the ratio between acutual torque and AO set value
+	    //torque/1V, torque in Nm
+	    static const float torque_per_voltage[] = { torq_const[0]*max_current[0]/CommunicationInterface::max_voltage, torq_const[1]*max_current[1]/CommunicationInterface::max_voltage, torq_const[2]*max_current[2]/CommunicationInterface::max_voltage, torq_const[3]*max_current[3]/CommunicationInterface::max_voltage, torq_const[4]*max_current[4]/CommunicationInterface::max_voltage, torq_const[5]*max_current[5]/CommunicationInterface::max_voltage, torq_const[6]*max_current[6]/CommunicationInterface::max_voltage };
+	    //voltage/1Nm, voltage in V
+	    static const float voltage_per_torque[] = { CommunicationInterface::max_voltage/torq_const[0]/max_current[0], CommunicationInterface::max_voltage/torq_const[1]/max_current[1], CommunicationInterface::max_voltage/torq_const[2]/max_current[2], CommunicationInterface::max_voltage/torq_const[3]/max_current[3], CommunicationInterface::max_voltage/torq_const[4]/max_current[4], CommunicationInterface::max_voltage/torq_const[5]/max_current[5], CommunicationInterface::max_voltage/torq_const[6]/max_current[6] };
+	    
+	    //TODO
+	    static float accu_max[] = { torq_const[0]*max_current[0]/position_PID_P[0]/position_PID_I2P[0], torq_const[1]*max_current[1]/position_PID_P[1]/position_PID_I2P[1], torq_const[2]*max_current[2]/position_PID_P[2]/position_PID_I2P[2], torq_const[3]*max_current[3]/position_PID_P[3]/position_PID_I2P[3], torq_const[4]*max_current[4]/position_PID_P[4]/position_PID_I2P[4], torq_const[5]*max_current[5]/position_PID_P[5]/position_PID_I2P[5], torq_const[6]*max_current[6]/position_PID_P[6]/position_PID_I2P[6] };
 	    
 	    static const int enc_count[] = {2000, 2000, 2000, 2000, 2000, 2000, 2000};
 	    static const int gear_ratio[] = {483, 483, 404, 404, 404, 404, 204};
