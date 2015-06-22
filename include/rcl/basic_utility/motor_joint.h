@@ -15,20 +15,11 @@ namespace rcl
     protected:
 	RobotArm* root_;
 	
-	//degree of freedom
-	int dof_;
-	
-	//reference position for each joint. in degree
-	std::vector<float> home_;
-	
 	//motor control mode
 	char mode_;
 	
 	//accumulation of PID integrator
 	std::vector<float> accumulator_;
-	
-	//joint degree per motor count
-	std::vector<float> reduction_ratio_;
 	
 	//target position command
 	std::vector<float> target_pos_;//in deg
