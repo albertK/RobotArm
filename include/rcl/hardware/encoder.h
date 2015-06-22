@@ -6,12 +6,7 @@ namespace rcl
     class Encoder
     {
     protected:
-	//interface card ID number
-	int card_0_;
-	int card_1_;
 	
-	//encoder mode
-	int mode_;
     public:
 	//initialize the encoder interface card
 	bool init();
