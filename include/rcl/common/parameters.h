@@ -54,13 +54,22 @@ namespace rcl
 	    //TODO
 	    static float accu_max;
 	    
-	    //TODO unit?
-	    static float torq_const[] = {0.0385, 0.0385, 0.0302, 0.0302, 0.0259, 0.0259, 0.0208};
+	    //torque constant. in mNm/A
+	    static const float torq_const[] = {0.0385, 0.0385, 0.0302, 0.0302, 0.0259, 0.0259, 0.0208};
 	    
-	    static int enc_count[] = {2000, 2000, 2000, 2000, 2000, 2000, 2000};
-	    static int gear_ratio[] = {483, 483, 404, 404, 404, 404, 204};
+	    //maximun allowable current for each motor. in A
+	    static const float max_current[] = {10.0, 10.0, 6.0, 6.0, 3.5, 3.5, 1.5};
+	    
+	    static const int enc_count[] = {2000, 2000, 2000, 2000, 2000, 2000, 2000};
+	    static const int gear_ratio[] = {483, 483, 404, 404, 404, 404, 204};
+	    static const int reduction[] = {enc_count[0]*gear_ratio[0], enc_count[1]*gear_ratio[1], enc_count[2]*gear_ratio[2], enc_count[3]*gear_ratio[3], enc_count[4]*gear_ratio[4], enc_count[5]*gear_ratio[5], enc_count[6]*gear_ratio[6]};
+	    static const float deg_per_count[] = {360.0/reduction[0], 360.0/reduction[1], 360.0/reduction[2], 360.0/reduction[3], 360.0/reduction[4], 360.0/reduction[5], 360.0/reduction[6]};
+	    static const float count_per_deg[] = {reduction[0]/360.0, reduction[1]/360.0, reduction[2]/360.0, reduction[3]/360.0, reduction[4]/360.0, reduction[5]/360.0, reduction[6]/360.0};
+	    
 	    //reference position for each joint. in degree
-	    static float home[] = {0.0, -90.0, 0.0, 180.0, 0.0, 0.0, 0.0};
+	    static const float home[] = {0.0, -90.0, 0.0, 180.0, 0.0, 0.0, 0.0};
+	    
+	    static const int dir[] = {-1, 1, -1, 1, -1, 1, -1};
 	};
     };
 };
