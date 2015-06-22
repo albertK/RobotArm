@@ -1,5 +1,6 @@
 #include "rcl/basic_utility/motor_joint.h"
 #include "rcl/common/parameters.h"
+#include <../../LuoLitaArm/RobotLita.h>
 
 using namespace rcl::Parameters::Common;
 using namespace rcl::Parameters::MotorJoint;
@@ -22,6 +23,7 @@ void rcl::MotorJoint::init()
     current_torq_.resize(dof);
     
     accumulator_.resize(dof);
+    diff_.resize(dof);
     
     for(unsigned int i = 0; i < dof; ++i)
     {
@@ -34,37 +36,81 @@ void rcl::MotorJoint::init()
 	current_torq_.at(i) = home[i];
 	
 	accumulator_.at(i) = 0.0;
+	diff_.at(i) = 0.0;
     }
 }
 
 void rcl::MotorJoint::update()
 {
+    //update motor state
+    std::vector<float> pos_buff(dof, 0.0);
+    std::vector<float> vel_buff(dof, 0.0);
+    
+    for(unsigned int i = 0; i < dof; ++i)
+    {
+	pos_buff.at(i) = root_->encoder.getCount() * deg_per_count[i] - home[i];
+	vel_buff.at(i) = (pos_buff.at(i) - current_pos_.at(i)) / sampling_time;
+	current_acc_.at(i) = (vel_buff.at(i) - current_vel_.at(i)) / sampling_time;
+	current_vel_.at(i) = vel_buff.at(i);
+	current_pos_.at(i) = pos_buff.at(i);
+	current_torq_.at(i) = target_torq_.at(i);
+    }
+
+    //calculate the motor torque command
+    std::vector<float> command(dof, 0.0);
     switch(mode_)
     {
 	case 'p':
-	    /*
-	     * generate motor command
-	     */
-	    //position error
-	    //joint space to motor space
-	    //P gain
-	    //I gain
-	    //feedforward
-	    //rotation direction
-	    //send motor command
+	{
+	    //calculate the enc error
+	    std::vector<float> enc_pos_error(dof, 0.0);
+	    for(unsigned int i = 0; i < dof; ++i)
+	    {
+		enc_pos_error.at(i) = floor((target_pos_.at(i) - current_pos_.at(i)) * count_per_deg);
+	    }
+
+	    //calculate the PID gain
+	    std::vector<float> P(dof, 0.0);
+	    std::vector<float> I(dof, 0.0);
+	    std::vector<float> D(dof, 0.0);
+	    for(unsigned int i = 0; i < dof; ++i)
+	    {
+		//P gain
+		P.at(i) = position_PID_P[i] * enc_pos_error.at(i);
+		
+		//I gain
+		accumulator_.at(i) += enc_pos_error.at(i);
+		if(accumulator_.at(i) > accu_max[i])
+		    accumulator_.at(i) = accu_max[i];
+		else if(accumulator_.at(i) < -accu_max[i])
+		    accumulator_.at(i) = -accu_max[i];
+		
+		I.at(i) = position_PID_P[i] * position_PID_I2P[i] * accumulator_.at(i);
+		
+		//D gain
+		D.at(i) = position_PID_P[i] * position_PID_D2P[i] * (enc_pos_error.at(i) - diff_.at(i));
+		diff_.at(i) = enc_pos_error.at(i);
+	    }
 	    
-	    /*
-	     * update motor state
-	     */
-	    //motor space to joint space
-	    //relative to the initial home pose
-	    //update
+	    //final motor torque command, including the torque feedforward
+	    for(unsigned int i = 0; i < dof; ++i)
+	    {
+		command.at(i) = P.at(i) + I.at(i), D.at(i) + target_torq_.at(i);
+	    }
 	    break;
+	}
 	case 'v':
 	    break;
 	case 't':
+	    for(unsigned int i = 0; i < dof; ++i)
+	    {
+		command.at(i) = target_torq_.at(i);
+	    }
 	    break;
     }
+    
+    //rotation direction
+    //send the motor torque command
 }
 
 void rcl::MotorJoint::quit()
@@ -76,7 +122,7 @@ void rcl::MotorJoint::halt()
 {
     mode_ = 'p';
     
-    for(unsigned int i = 0; i < dof_; ++i)
+    for(unsigned int i = 0; i < dof; ++i)
     {
 	target_pos_.at(i) = current_pos_.at(i);
 	target_vel_.at(i) = 0;
@@ -92,7 +138,7 @@ void rcl::MotorJoint::setControlMode(char mode)
 
 void rcl::MotorJoint::setTargetPosition(std::vector< float > pos, std::vector< float > ff_torq)
 {
-    for(unsigned int i = 0; i < dof_; ++i)
+    for(unsigned int i = 0; i < dof; ++i)
     {
 	target_pos_.at(i) = pos.at(i);
 	target_torq_.at(i) = ff_torq.at(i);
@@ -101,7 +147,7 @@ void rcl::MotorJoint::setTargetPosition(std::vector< float > pos, std::vector< f
 
 void rcl::MotorJoint::setTargetVelocity(std::vector< float > vel, std::vector< float > ff_torq)
 {
-    for(unsigned int i = 0; i < dof_; ++i)
+    for(unsigned int i = 0; i < dof; ++i)
     {
 	target_vel_.at(i) = vel.at(i);
 	target_torq_.at(i) = ff_torq.at(i);
@@ -110,7 +156,7 @@ void rcl::MotorJoint::setTargetVelocity(std::vector< float > vel, std::vector< f
 
 void rcl::MotorJoint::setTargetTorque(std::vector< float > torq)
 {
-    for(unsigned int i = 0; i < dof_; ++i)
+    for(unsigned int i = 0; i < dof; ++i)
     {
 	target_torq_.at(i) = torq.at(i);
     }

@@ -21,15 +21,19 @@ namespace rcl
 	//accumulation of PID integrator
 	std::vector<float> accumulator_;
 	
+	//last PID diff
+	std::vector<float> diff_;
+	
 	//target position command
 	std::vector<float> target_pos_;//in deg
 	std::vector<float> target_vel_;//in deg/s
-	std::vector<float> target_torq_;//TODO unit?
+	std::vector<float> target_torq_;//in Nm
 	
 	//current position read from encoder
 	std::vector<float> current_pos_;//in deg
 	std::vector<float> current_vel_;//in deg/s
-	std::vector<float> current_torq_;//TODO unit?
+	std::vector<float> current_acc_;//in deg/sec^2
+	std::vector<float> current_torq_;//in Nm
     public:
 	MotorJoint(){}//do not use this default constructor
 	MotorJoint(RobotArm* root);
