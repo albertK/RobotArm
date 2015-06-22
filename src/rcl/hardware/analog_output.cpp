@@ -3,18 +3,20 @@
 #include "rcl/hardware/analog_output.h"
 #include "rcl/common/parameters.h"
 
+using namespace rcl::Parameters::CommunicationInterface;
+
 bool rcl::AnalogOutput::init()
 {
-    card_ = PIODA_Open(rcl::Parameters::CommunicationInterface::ao_dev.c_str());
+    card_ = PIODA_Open(ao_dev.c_str());
     if(card_ < 0)
 	return false;
     
     if(PIODA_DriverInit(card_))
 	return false;
     
-    voltage_.resize(rcl::Parameters::CommunicationInterface::channel);
+    voltage_.resize(num_channel);
     
-    for(unsigned int i = 0; i < rcl::Parameters::CommunicationInterface::channel; ++i)
+    for(unsigned int i = 0; i < num_channel; ++i)
     {
 	voltage_.at(i) = 0.0;
 	PIODA_AnalogOutputCalVoltage(card_, i, voltage_.at(i));
@@ -30,9 +32,9 @@ void rcl::AnalogOutput::quit()
 
 void rcl::AnalogOutput::setVoltage(float voltage, int channel)
 {
-    if(voltage > 10)
+    if(voltage > max_voltage)
 	voltage_.at(channel) = 10;
-    else if(voltage < -10)
+    else if(voltage < - max_voltage)
 	voltage_.at(channel) = -10;
     else
 	voltage_.at(channel) = voltage;

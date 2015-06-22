@@ -21,7 +21,8 @@ namespace rcl
 	{
 	    //device name of analog output card.
 	    static const std::string ao_dev = "/dev/ixpio3";
-	    static const int channel = 8;
+	    static const int num_channel = 8;
+	    static const float max_voltage = 10.0;
 	    
 	    //6-axis encoder card
 	    static const int enc_6x = 0;
