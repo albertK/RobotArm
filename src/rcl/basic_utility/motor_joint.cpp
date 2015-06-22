@@ -1,6 +1,9 @@
 #include "rcl/basic_utility/motor_joint.h"
 #include "rcl/common/parameters.h"
 
+using namespace rcl::Parameters::Common;
+using namespace rcl::Parameters::MotorJoint;
+
 rcl::MotorJoint::MotorJoint(rcl::RobotArm* root)
 {
     root_ = root;
@@ -8,38 +11,29 @@ rcl::MotorJoint::MotorJoint(rcl::RobotArm* root)
 
 void rcl::MotorJoint::init()
 {
-    dof_ = rcl::Parameters::Common::dof;
+    mode_ = 'p';
     
-    home_.resize(dof_);
+    target_pos_.resize(dof);
+    target_vel_.resize(dof);
+    target_torq_.resize(dof);
     
-    target_pos_.resize(dof_);
-    target_vel_.resize(dof_);
-    target_torq_.resize(dof_);
+    current_pos_.resize(dof);
+    current_vel_.resize(dof);
+    current_torq_.resize(dof);
     
-    current_pos_.resize(dof_);
-    current_vel_.resize(dof_);
-    current_torq_.resize(dof_);
+    accumulator_.resize(dof);
     
-    accumulator_.resize(dof_);
-    
-    reduction_ratio_.resize(dof_);
-    
-    for(unsigned int i = 0; i < dof_; ++i)
+    for(unsigned int i = 0; i < dof; ++i)
     {
-	home_.at(i) = rcl::Parameters::MotorJoint::home[i];
+	target_pos_.at(i) = home[i];
+	target_vel_.at(i) = home[i];
+	target_torq_.at(i) = home[i];
 	
-	target_pos_.at(i) = home_.at(i);
-	target_vel_.at(i) = home_.at(i);
-	target_torq_.at(i) = home_.at(i);
-	
-	current_pos_.at(i) = home_.at(i);
-	current_vel_.at(i) = home_.at(i);
-	current_torq_.at(i) = home_.at(i);
+	current_pos_.at(i) = home[i];
+	current_vel_.at(i) = home[i];
+	current_torq_.at(i) = home[i];
 	
 	accumulator_.at(i) = 0.0;
-	
-	int reduction = rcl::Parameters::MotorJoint::enc_count[i] * rcl::Parameters::MotorJoint::gear_ratio[i];
-	reduction_ratio_.at(i) = 360.0 / ((float) reduction);
     }
 }
 
