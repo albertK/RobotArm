@@ -24,9 +24,11 @@ namespace rcl
 	    static const int channel = 8;
 	    
 	    //6-axis encoder card
-	    static const int enc_card_0 = 0;
+	    static const int enc_6x = 0;
+	    static const std::string enc_6x_dev = "/dev/ixpio1";
 	    //3-axis encoder card
-	    static const int enc_card_1 = 1;
+	    static const int enc_3x = 2;
+	    static const std::string enc_3x_dev = "/dev/ixpio2";
 	    
 	    //encoder mode
 	    static const int mode = ENC_QUADRANT;
