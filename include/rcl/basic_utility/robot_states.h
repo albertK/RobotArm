@@ -70,6 +70,8 @@ namespace rcl
 	Eigen::Vector3f getTargetEEFOrientation();
 	Eigen::Vector4f getTargetEEFQuaternion();
     };
+    
+    RobotStates robot_states;
 };
 
 #endif
