@@ -4,6 +4,11 @@
 #include <vector>
 #include <queue>
 
+#include "ReflexxesAPI.h"
+#include "RMLPositionFlags.h"
+#include "RMLPositionInputParameters.h"
+#include "RMLPositionOutputParameters.h"
+
 #include "rcl/application/skill.h"
 
 namespace rcl
@@ -19,6 +24,13 @@ namespace rcl
 	
 	//to see if the robot have reached the final target
 	bool target_reached_;
+	
+	//Reflexxes OTG
+	ReflexxesAPI* RML;//need initialization
+	RMLPositionInputParameters* IP;//need initialization
+	RMLPositionOutputParameters* OP;//need initialization
+	RMLPositionFlags Flags;
+	
     public:
 	//inherited member functions from the class Skill.
 	virtual void startSkill();
