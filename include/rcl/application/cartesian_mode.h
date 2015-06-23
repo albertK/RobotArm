@@ -26,7 +26,7 @@ namespace rcl
 	virtual void startSkill();
 	virtual void stopSkill();
 	virtual void updateSkill();
-	virtual void init(RobotArm* root);
+	virtual void init();
 	virtual void quit();
 	
 	//the robot start the motion only after the call of this function

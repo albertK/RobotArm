@@ -1,14 +1,10 @@
+#include <cmath>
+
 #include "rcl/basic_utility/motor_joint.h"
 #include "rcl/common/parameters.h"
-#include <../../LuoLitaArm/RobotLita.h>
 
 using namespace rcl::Parameters::Common;
 using namespace rcl::Parameters::MotorJoint;
-
-rcl::MotorJoint::MotorJoint(rcl::RobotArm* root)
-{
-    root_ = root;
-}
 
 void rcl::MotorJoint::init()
 {
@@ -28,12 +24,12 @@ void rcl::MotorJoint::init()
     for(unsigned int i = 0; i < dof; ++i)
     {
 	target_pos_.at(i) = home[i];
-	target_vel_.at(i) = home[i];
-	target_torq_.at(i) = home[i];
+	target_vel_.at(i) = 0.0;
+	target_torq_.at(i) = 0.0;
 	
 	current_pos_.at(i) = home[i];
-	current_vel_.at(i) = home[i];
-	current_torq_.at(i) = home[i];
+	current_vel_.at(i) = 0.0;
+	current_torq_.at(i) = 0.0;
 	
 	accumulator_.at(i) = 0.0;
 	diff_.at(i) = 0.0;
@@ -48,7 +44,8 @@ void rcl::MotorJoint::update()
     
     for(unsigned int i = 0; i < dof; ++i)
     {
-	pos_buff.at(i) = root_->encoder.getCount() * deg_per_count[i] - home[i];
+	//TODO make sure how to use the motor dir
+	pos_buff.at(i) = dir[i] * encoder.getCount(i) * deg_per_count[i] - home[i];
 	vel_buff.at(i) = (pos_buff.at(i) - current_pos_.at(i)) / sampling_time;
 	current_acc_.at(i) = (vel_buff.at(i) - current_vel_.at(i)) / sampling_time;
 	current_vel_.at(i) = vel_buff.at(i);
@@ -57,7 +54,7 @@ void rcl::MotorJoint::update()
     }
 
     //calculate the motor torque command
-    std::vector<float> command(dof, 0.0);
+    std::vector<float> torq_command(dof, 0.0);
     switch(mode_)
     {
 	case 'p':
@@ -66,7 +63,7 @@ void rcl::MotorJoint::update()
 	    std::vector<float> enc_pos_error(dof, 0.0);
 	    for(unsigned int i = 0; i < dof; ++i)
 	    {
-		enc_pos_error.at(i) = floor((target_pos_.at(i) - current_pos_.at(i)) * count_per_deg);
+		enc_pos_error.at(i) = floor((target_pos_.at(i) - current_pos_.at(i)) * count_per_deg[i]);
 	    }
 
 	    //calculate the PID gain
@@ -95,30 +92,42 @@ void rcl::MotorJoint::update()
 	    //final motor torque command, including the torque feedforward
 	    for(unsigned int i = 0; i < dof; ++i)
 	    {
-		command.at(i) = P.at(i) + I.at(i), D.at(i) + target_torq_.at(i);
+		torq_command.at(i) = P.at(i) + I.at(i), D.at(i) + target_torq_.at(i);
 	    }
 	    break;
 	}
-	case 'v':
+	case 'v'://TODO
+	{
 	    break;
+	}
 	case 't':
 	    for(unsigned int i = 0; i < dof; ++i)
 	    {
-		command.at(i) = target_torq_.at(i);
+		torq_command.at(i) = target_torq_.at(i);
 	    }
 	    break;
     }
     
-    //rotation direction
-    //send the motor torque command
+    for(unsigned int i = 0; i < dof; ++i)
+    {
+	//TODO make sure how to use the motor dir
+	float voltage_command = 0.0;
+	voltage_command = dir[i] * torq_command.at(i) * voltage_per_torque[i];
+	if(voltage_command > 10.0)
+	    voltage_command = 10.0;
+	else if(voltage_command < -10.0)
+	    voltage_command = -10.0;
+	
+	ao.setVoltage(voltage_command, i);
+    }
 }
 
-void rcl::MotorJoint::quit()
+void rcl::MotorJoint::quit()//TODO
 {
-    halt();
+    
 }
 
-void rcl::MotorJoint::halt()
+void rcl::MotorJoint::halt()//TODO
 {
     mode_ = 'p';
     
@@ -128,11 +137,20 @@ void rcl::MotorJoint::halt()
 	target_vel_.at(i) = 0;
     }
     
-    update();
+    //update();
 }
 
 void rcl::MotorJoint::setControlMode(char mode)
 {
+    if(mode_ != mode)
+    {
+	for(unsigned int i = 0; i < dof; ++i)
+	{
+	    accumulator_.at(i) = 0.0;
+	    diff_.at(i) = 0.0;
+	}
+    }
+    
     mode_ = mode;
 }
 

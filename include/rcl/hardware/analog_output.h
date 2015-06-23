@@ -34,6 +34,8 @@ namespace rcl
 	//release resources, do garbage collection. call when exit the program
 	void quit();
     };
+    
+    static AnalogOutput ao;
 };
 
 #endif

@@ -3,18 +3,14 @@
 
 #include <vector>
 
-#include "rcl/common/robot_arm.h"
-
-//Ref http://stackoverflow.com/questions/2133250/does-not-name-a-type-error-in-c
-class RobotArm;
+#include "rcl/hardware/encoder.h"
+#include "rcl/hardware/analog_output.h"
 
 namespace rcl
 {
     class MotorJoint
     {
     protected:
-	RobotArm* root_;
-	
 	//motor control mode
 	char mode_;
 	
@@ -35,9 +31,6 @@ namespace rcl
 	std::vector<float> current_acc_;//in deg/sec^2
 	std::vector<float> current_torq_;//in Nm
     public:
-	MotorJoint(){}//do not use this default constructor
-	MotorJoint(RobotArm* root);
-	
 	/*
 	 * initialize necessary parameters
 	 */
@@ -93,6 +86,8 @@ namespace rcl
 	std::vector<float> getCurrentTorque();
 
     };
+    
+    static MotorJoint motor_joint;
 };
 
 #endif

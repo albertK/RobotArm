@@ -52,8 +52,9 @@ namespace rcl
 	    static const float position_PID_I2P[] = {0.0050, 0.0060, 0.0030, 0.0060, 0.0020, 0.0030, 0.0010};
 	    static const float position_PID_D2P[] = {0.100, 0.100, 0.100, 0.100, 0.100, 0.100, 0.100};
 	    
-	    static const float velocity_p[] = {0.012, 0.012, 0.008, 0.010, 0.004, 0.005, 0.002};
-	    static const float velocity_i2p[] = {0.0060, 0.0080, 0.0030, 0.0050, 0.0008, 0.0010, 0.0008};
+	    static const float velocity_PID_P[] = {0.012, 0.012, 0.008, 0.010, 0.004, 0.005, 0.002};
+	    static const float velocity_PID_I2P[] = {0.0060, 0.0080, 0.0030, 0.0050, 0.0008, 0.0010, 0.0008};
+	    static const float velocity_PID_D2P[] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 	    
 	    //torque constant. in Nm/A
 	    static const float torq_const[] = {0.0385, 0.0385, 0.0302, 0.0302, 0.0259, 0.0259, 0.0208};
@@ -67,19 +68,23 @@ namespace rcl
 	    //voltage/1Nm, voltage in V
 	    static const float voltage_per_torque[] = { CommunicationInterface::max_voltage/torq_const[0]/max_current[0], CommunicationInterface::max_voltage/torq_const[1]/max_current[1], CommunicationInterface::max_voltage/torq_const[2]/max_current[2], CommunicationInterface::max_voltage/torq_const[3]/max_current[3], CommunicationInterface::max_voltage/torq_const[4]/max_current[4], CommunicationInterface::max_voltage/torq_const[5]/max_current[5], CommunicationInterface::max_voltage/torq_const[6]/max_current[6] };
 	    
-	    //TODO
+	    //PID integrator max
 	    static float accu_max[] = { torq_const[0]*max_current[0]/position_PID_P[0]/position_PID_I2P[0], torq_const[1]*max_current[1]/position_PID_P[1]/position_PID_I2P[1], torq_const[2]*max_current[2]/position_PID_P[2]/position_PID_I2P[2], torq_const[3]*max_current[3]/position_PID_P[3]/position_PID_I2P[3], torq_const[4]*max_current[4]/position_PID_P[4]/position_PID_I2P[4], torq_const[5]*max_current[5]/position_PID_P[5]/position_PID_I2P[5], torq_const[6]*max_current[6]/position_PID_P[6]/position_PID_I2P[6] };
 	    
+	    //motor encoder count per revolution
 	    static const int enc_count[] = {2000, 2000, 2000, 2000, 2000, 2000, 2000};
 	    static const int gear_ratio[] = {483, 483, 404, 404, 404, 404, 204};
 	    static const int reduction[] = {enc_count[0]*gear_ratio[0], enc_count[1]*gear_ratio[1], enc_count[2]*gear_ratio[2], enc_count[3]*gear_ratio[3], enc_count[4]*gear_ratio[4], enc_count[5]*gear_ratio[5], enc_count[6]*gear_ratio[6]};
+	    //how many joint deg per 1 encoder count
 	    static const float deg_per_count[] = {360.0/reduction[0], 360.0/reduction[1], 360.0/reduction[2], 360.0/reduction[3], 360.0/reduction[4], 360.0/reduction[5], 360.0/reduction[6]};
+	    //how many encoder count per 1 joint deg
 	    static const float count_per_deg[] = {reduction[0]/360.0, reduction[1]/360.0, reduction[2]/360.0, reduction[3]/360.0, reduction[4]/360.0, reduction[5]/360.0, reduction[6]/360.0};
 	    
 	    //reference position for each joint. in degree
 	    static const float home[] = {0.0, -90.0, 0.0, 180.0, 0.0, 0.0, 0.0};
 	    
-	    static const int dir[] = {-1, 1, -1, 1, -1, 1, -1};
+	    //motor rotation direction, in order to match the DH definition
+	    static const float dir[] = {-1.0, 1.0, -1.0, 1.0, -1.0, 1.0, -1.0};
 	};
     };
 };

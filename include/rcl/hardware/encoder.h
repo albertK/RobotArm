@@ -20,6 +20,8 @@ namespace rcl
 	//release resources, do garbage collection. call when exit the program
 	void quit();
     };
+    
+    static Encoder encoder;
 };
 
 #endif

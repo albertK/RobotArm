@@ -5,7 +5,6 @@
 
 #include <eigen3/Eigen/Dense>
 
-#include "rcl/common/robot_arm.h"
 #include "rcl/common/parameters.h"
 
 //Ref http://stackoverflow.com/questions/2133250/does-not-name-a-type-error-in-c
@@ -16,7 +15,6 @@ namespace rcl
     class RobotStates
     {
     protected:
-	RobotArm* root;
 	std::vector<float> current_joint_position_;
 	std::vector<float> current_joint_velocity_;
 	std::vector<float> current_joint_torque_;
@@ -42,8 +40,6 @@ namespace rcl
 	
     
     public:
-	RobotStates();//do not use this default constructor
-	RobotStates(RobotArm* root);
 	std::vector<float> getCurrentJointPposition();
 	std::vector<float> getCurrentJointVelocity();
 	std::vector<float> getCurrentJointTorque();
