@@ -7,7 +7,11 @@ set(DAQ_LINK_DIR /home/albert/Lib/ixpio/lib)
 set(DAQ_LINK_LIB_AO pio_64)
 set(DAQ_LINK_LIB_ENC enc600_64)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include ${DAQ_INCLUDE_DIR})
+set(REFLEXXES_INCLUDE_DIR /home/albert/Lib/ReflexxesTypeII/include)
+set(REFLEXXES_LINK_DIR /home/albert/Lib/ReflexxesTypeII/Linux/x64/release/lib/static)
+set(REFLEXXES_LINK_LIB ReflexxesTypeII)
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include ${DAQ_INCLUDE_DIR} ${REFLEXXES_INCLUDE_DIR})
 link_directories(${DAQ_LINK_DIR})
 
 #build the library AnalogOutput
