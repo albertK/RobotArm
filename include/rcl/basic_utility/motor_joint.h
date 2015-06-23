@@ -82,6 +82,9 @@ namespace rcl
 	//get current velocity of each joint. in degree/sec
 	std::vector<float> getCurrentVelocity();
 	
+	//get current acceleration of each joint. in deg/sec^2
+	std::vector<float> getCurrentAcceleration();
+	
 	//get current torque of each joint.  in mN
 	std::vector<float> getCurrentTorque();
 

@@ -191,6 +191,11 @@ std::vector< float > rcl::MotorJoint::getCurrentVelocity()
     return current_vel_;
 }
 
+std::vector< float > rcl::MotorJoint::getCurrentAcceleration()
+{
+    return current_acc_;
+}
+
 std::vector< float > rcl::MotorJoint::getCurrentTorque()
 {
     return current_torq_;
