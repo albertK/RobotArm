@@ -13,7 +13,7 @@ void rcl::RobotStates::update()
     current_joint_torque_ = motor_joint.getCurrentTorque();
 }
 
-std::vector< float > rcl::RobotStates::getCurrentJointPposition()
+std::vector< float > rcl::RobotStates::getCurrentJointPosition()
 {
     return current_joint_position_;
 }

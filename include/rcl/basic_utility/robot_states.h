@@ -45,7 +45,7 @@ namespace rcl
 	void update();
 	
 	//joint
-	std::vector<float> getCurrentJointPposition();
+	std::vector<float> getCurrentJointPosition();
 	std::vector<float> getCurrentJointVelocity();
 	std::vector<float> getCurrentJointAcceleration();
 	std::vector<float> getCurrentJointTorque();
