@@ -16,8 +16,9 @@ target_link_libraries(AnalogOutput ${DAQ_LINK_LIB_AO} ${DAQ_LINK_LIB_AO})
 
 #build the library Encoder
 add_library(Encoder ${CMAKE_CURRENT_SOURCE_DIR}/src/rcl/hardware/encoder.cpp)
-target_link_libraries(Encoder ${DAQ_LINK_LIB_ENC} )
+target_link_libraries(Encoder ${DAQ_LINK_LIB_ENC})
 
-#build the executable
-add_executable(test src/test/test.cpp)
-target_link_libraries(test AnalogOutput Encoder)
+#build the library MotorJoint
+add_library(MotorJoint ${CMAKE_CURRENT_SOURCE_DIR}/src/rcl/basic_utility/motor_joint.cpp)
+target_link_libraries(MotorJoint Encoder AnalogOutput)
+
