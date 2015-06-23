@@ -6,18 +6,19 @@
 #include <eigen3/Eigen/Dense>
 
 #include "rcl/common/parameters.h"
-
-//Ref http://stackoverflow.com/questions/2133250/does-not-name-a-type-error-in-c
-class RobotArm;
+#include "rcl/basic_utility/motor_joint.h"
 
 namespace rcl
 {
     class RobotStates
     {
     protected:
+	//joint
 	std::vector<float> current_joint_position_;
 	std::vector<float> current_joint_velocity_;
+	std::vector<float> current_joint_acceleration_;
 	std::vector<float> current_joint_torque_;
+	
 	std::vector<Eigen::Matrix4f> current_link_pose_;
 	Eigen::Matrix4f current_eef_pose_;
 	Eigen::Vector3f current_eef_position_;
@@ -40,9 +41,15 @@ namespace rcl
 	
     
     public:
+	//collect and calculate the required information
+	void update();
+	
+	//joint
 	std::vector<float> getCurrentJointPposition();
 	std::vector<float> getCurrentJointVelocity();
+	std::vector<float> getCurrentJointAcceleration();
 	std::vector<float> getCurrentJointTorque();
+	
 	std::vector<Eigen::Matrix4f> getCurrentLinkPose();
 	Eigen::Matrix4f getCurrentEEFPose();
 	Eigen::Vector3f getCurrentEEFPosition();
