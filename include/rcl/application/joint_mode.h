@@ -10,26 +10,40 @@
 #include "RMLPositionOutputParameters.h"
 
 #include "rcl/application/skill.h"
+#include "rcl/common/parameters.h"
 
 namespace rcl
 {
     class JointMode : public Skill
     {
     protected:
-	//the commanded target queue. first in first out
+	//the commanded target queue. first in first out. pop only when the target is reached
 	std::queue<std::vector<float> > targets_;
 	
-	//the current target that the robot is heading to
+	//the current target that the robot is heading to.
 	std::vector<float> current_target_;
 	
-	//to see if the robot have reached the final target
+	//to see if the robot have reached the last target
 	bool target_reached_;
 	
+	float speed_ratio_;
+	float via_speed_ratio_;
+	
+	/*
+	 * operation mode
+	 * 2: moving
+	 * 1: start
+	 * 0: stop
+	 * -1: pause
+	 */
+	short op_mode_;
+	
 	//Reflexxes OTG
-	ReflexxesAPI* RML;//need initialization
-	RMLPositionInputParameters* IP;//need initialization
-	RMLPositionOutputParameters* OP;//need initialization
-	RMLPositionFlags Flags;
+	ReflexxesAPI* RML_;//need initialization
+	RMLPositionInputParameters* IP_;//need initialization
+	RMLPositionOutputParameters* OP_;//need initialization
+	RMLPositionFlags Flags_;
+	int OTG_result_;
 	
     public:
 	//inherited member functions from the class Skill.
@@ -70,7 +84,10 @@ namespace rcl
 	std::vector<std::vector<float> > getAllTargets();
 	
 	//set the maximum speed of each joint
-	void setSpeedRatio(float ratio = 0.5);
+	void setSpeedRatio(float ratio = rcl::Parameters::JointMode::default_speed_ratio);
+	
+	//set the maximum speed of each joint
+	void setViaSpeedRatio(float ratio = rcl::Parameters::JointMode::default_via_speed_ratio);
     };
 };
 
