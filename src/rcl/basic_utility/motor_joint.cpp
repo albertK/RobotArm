@@ -41,10 +41,8 @@ void rcl::MotorJoint::update()
     //update motor state
     std::vector<float> pos_buff(dof, 0.0);
     std::vector<float> vel_buff(dof, 0.0);
-    
     for(unsigned int i = 0; i < dof; ++i)
     {
-	//TODO make sure how to use the motor dir
 	pos_buff.at(i) = dir[i] * encoder.getCount(i) * deg_per_count[i] - home[i];
 	vel_buff.at(i) = (pos_buff.at(i) - current_pos_.at(i)) / sampling_time;
 	current_acc_.at(i) = (vel_buff.at(i) - current_vel_.at(i)) / sampling_time;
@@ -108,9 +106,9 @@ void rcl::MotorJoint::update()
 	    break;
     }
     
+    //convert the torque command to voltage command and send it
     for(unsigned int i = 0; i < dof; ++i)
     {
-	//TODO make sure how to use the motor dir
 	float voltage_command = 0.0;
 	voltage_command = dir[i] * torq_command.at(i) * voltage_per_torque[i];
 	if(voltage_command > 10.0)
