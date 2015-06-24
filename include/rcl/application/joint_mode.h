@@ -33,8 +33,7 @@ namespace rcl
 	 * operation mode
 	 * 2: moving
 	 * 1: start
-	 * 0: stop
-	 * -1: pause
+	 * 0: stop or pause
 	 */
 	short op_mode_;
 	
@@ -89,6 +88,8 @@ namespace rcl
 	//set the maximum speed of each joint
 	void setViaSpeedRatio(float ratio = rcl::Parameters::JointMode::default_via_speed_ratio);
     };
+    
+    JointMode joint_mode;
 };
 
 #endif
