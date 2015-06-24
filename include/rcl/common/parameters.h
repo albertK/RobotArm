@@ -37,14 +37,6 @@ namespace rcl
 	
 	namespace MotorJoint
 	{
-	    //joint limit
-	    static std::vector<float> p_min;
-	    static std::vector<float> p_max;
-	    static std::vector<float> v_min;
-	    static std::vector<float> v_max;
-	    static std::vector<float> t_min;
-	    static std::vector<float> t_max;
-	    
 	    //TODO tune the PID parameters
 	    //controller PID parameters
 	    //static const float position_p[] = {0.00020, 0.00025, 0.00015, 0.00020, 0.00015, 0.00030, 0.00004};
@@ -85,6 +77,18 @@ namespace rcl
 	    
 	    //motor rotation direction, in order to match the DH definition
 	    static const float dir[] = {-1.0, 1.0, -1.0, 1.0, -1.0, 1.0, -1.0};
+	};
+	
+	namespace JointMode
+	{
+	    //ratio between the desired maximun speed and the maximun allowable speed
+	    static const float default_speed_ratio = 0.5;
+	    //ratio between the via-point speed and the desired maximum speed
+	    static const float default_via_speed_ratio = 0.7;
+	    static const float joint_limit_upper[] = {};
+	    static const float joint_limit_lower[] = {};
+	    static const float max_vel[] = {};
+	    static const float max_acc[] = {};
 	};
     };
 };
