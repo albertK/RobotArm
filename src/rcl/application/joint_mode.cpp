@@ -160,10 +160,18 @@ bool rcl::JointMode::isTargetReached()
     return target_reached_;
 }
 
+bool isTargetOutOfBound(std::vector<float> target)
+{
+    bool out_of_bound = false;
+    for(unsigned int i = 0; i < dof; ++i)
+	if(target.at(i) > joint_limit_upper[i] || target.at(i) < joint_limit_lower[i])
+	    out_of_bound = true;
+	
+    return out_of_bound;
+}
+
 bool rcl::JointMode::pushTargetAbs(std::vector< float > target, std::vector< bool > mask)
 {
-    //TODO check whether the given target is out of the boundary
-    
     std::vector<float> masked_target = target;
     std::vector<float> current_joint_pos = robot_states.getCurrentJointPosition();
     
@@ -171,14 +179,19 @@ bool rcl::JointMode::pushTargetAbs(std::vector< float > target, std::vector< boo
 	if(!mask.at(i))
 	    masked_target.at(i) = current_joint_pos.at(i);
 	
-    targets_.push(masked_target);
-    target_reached_ = false;
+    if(isTargetOutOfBound(masked_target))
+    {
+	return false;
+    }
+    else
+    {
+	targets_.push(masked_target);
+	return true;
+    }
 }
 
 bool rcl::JointMode::pushTargetRel(std::vector< float > target, std::vector< bool > mask)
 {
-    //TODO check whether the give target is out of the boundary
-    
     std::vector<float> masked_target = target;
     std::vector<float> current_joint_pos = robot_states.getCurrentJointPosition();
     
@@ -189,9 +202,16 @@ bool rcl::JointMode::pushTargetRel(std::vector< float > target, std::vector< boo
 	else
 	    masked_target.at(i) += current_joint_pos.at(i);
     }
-	
-    targets_.push(masked_target);
-    target_reached_ = false;
+    
+    if(isTargetOutOfBound(masked_target))
+    {
+	return false;
+    }
+    else
+    {
+	targets_.push(masked_target);
+	return true;
+    }
 }
 
 bool rcl::JointMode::resetTargetAbs(std::vector< float > target, std::vector< bool > mask)
@@ -209,8 +229,15 @@ bool rcl::JointMode::resetTargetAbs(std::vector< float > target, std::vector< bo
 	if(!mask.at(i))
 	    masked_target.at(i) = current_joint_pos.at(i);
 	
-    current_target_ = masked_target;
-    target_reached_ = false;
+    if(isTargetOutOfBound(masked_target))
+    {
+	return false;
+    }
+    else
+    {
+	current_target_ = masked_target;
+	return true;
+    }
 }
 
 bool rcl::JointMode::resetTargetRel(std::vector< float > target, std::vector< bool > mask)
@@ -231,9 +258,16 @@ bool rcl::JointMode::resetTargetRel(std::vector< float > target, std::vector< bo
 	else
 	    masked_target.at(i) += current_joint_pos.at(i);
     }
-	
-    current_target_ = masked_target;
-    target_reached_ = false;
+    
+    if(isTargetOutOfBound(masked_target))
+    {
+	return false;
+    }
+    else
+    {
+	current_target_ = masked_target;
+	return true;
+    }
 }
 
 std::vector< float > rcl::JointMode::getCurrentTarget()

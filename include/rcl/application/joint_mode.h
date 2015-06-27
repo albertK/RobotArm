@@ -61,6 +61,9 @@ namespace rcl
 	//the robot stop its motion immediately and stay still once this function is called. any commanded targets will be cleaned.
 	void stopMotion();
 	
+	//check if the target is out of bound. true outside, false inside
+	bool isTargetOutOfBound(std::vector<float> target);
+	
 	//push and append the absolute taget in a queue
 	bool pushTargetAbs(std::vector<float> target, std::vector<bool> mask);
 	
