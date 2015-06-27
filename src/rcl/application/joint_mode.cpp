@@ -242,6 +242,7 @@ bool rcl::JointMode::resetTargetAbs(std::vector< float > target, std::vector< bo
 	
     if(isTargetOutOfBound(masked_target))
     {
+	current_target_ = current_joint_pos;
 	return false;
     }
     else
@@ -270,6 +271,7 @@ bool rcl::JointMode::resetTargetRel(std::vector< float > target, std::vector< bo
     
     if(isTargetOutOfBound(masked_target))
     {
+	current_target_ = current_joint_pos;
 	return false;
     }
     else
