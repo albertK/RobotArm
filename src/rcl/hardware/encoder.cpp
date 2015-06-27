@@ -9,24 +9,29 @@ using namespace rcl::Parameters::CommunicationInterface;
 
 bool rcl::Encoder::init()
 {
-    if(ENC6_REGISTRATION(enc_3x, enc_3x_dev.c_str()) && ENC6_REGISTRATION(enc_6x, enc_6x_dev.c_str()) != SUCCESS)
+    if(!init_)
     {
-	return false;
+	if(ENC6_REGISTRATION(enc_3x, enc_3x_dev.c_str()) && ENC6_REGISTRATION(enc_6x, enc_6x_dev.c_str()) != SUCCESS)
+	{
+	    return false;
+	}
+	
+	ENC6_INIT_CARD(enc_3x, mode, mode, mode, mode, mode, mode);
+	ENC6_INIT_CARD(enc_6x, mode, mode, mode, mode, mode, mode);
+	
+	ENC6_RESET_ENCODER(enc_6x, X1_axis);
+	ENC6_RESET_ENCODER(enc_6x, X2_axis);
+	ENC6_RESET_ENCODER(enc_6x, X3_axis);
+	ENC6_RESET_ENCODER(enc_6x, X4_axis);
+	ENC6_RESET_ENCODER(enc_6x, X5_axis);
+	ENC6_RESET_ENCODER(enc_6x, X6_axis);
+	
+	ENC6_RESET_ENCODER(enc_3x, X1_axis);
+	ENC6_RESET_ENCODER(enc_3x, X2_axis);
+	ENC6_RESET_ENCODER(enc_3x, X3_axis);
+	
+	init_ = true;
     }
-    
-    ENC6_INIT_CARD(enc_3x, mode, mode, mode, mode, mode, mode);
-    ENC6_INIT_CARD(enc_6x, mode, mode, mode, mode, mode, mode);
-    
-    ENC6_RESET_ENCODER(enc_6x, X1_axis);
-    ENC6_RESET_ENCODER(enc_6x, X2_axis);
-    ENC6_RESET_ENCODER(enc_6x, X3_axis);
-    ENC6_RESET_ENCODER(enc_6x, X4_axis);
-    ENC6_RESET_ENCODER(enc_6x, X5_axis);
-    ENC6_RESET_ENCODER(enc_6x, X6_axis);
-    
-    ENC6_RESET_ENCODER(enc_3x, X1_axis);
-    ENC6_RESET_ENCODER(enc_3x, X2_axis);
-    ENC6_RESET_ENCODER(enc_3x, X3_axis);
     
     return true;
 }

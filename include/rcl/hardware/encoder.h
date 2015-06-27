@@ -6,8 +6,11 @@ namespace rcl
     class Encoder
     {
     protected:
-	
+	//check if the class has been initialized. avoid multiple initialization
+	bool init_;
     public:
+	Encoder():init_(false){};
+	
 	//initialize the encoder interface card
 	bool init();
 	
