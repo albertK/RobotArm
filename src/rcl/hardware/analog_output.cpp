@@ -7,19 +7,24 @@ using namespace rcl::Parameters::CommunicationInterface;
 
 bool rcl::AnalogOutput::init()
 {
-    card_ = PIODA_Open(ao_dev.c_str());
-    if(card_ < 0)
-	return false;
-    
-    if(PIODA_DriverInit(card_))
-	return false;
-    
-    voltage_.resize(num_channel);
-    
-    for(unsigned int i = 0; i < num_channel; ++i)
+    if(! init_)
     {
-	voltage_.at(i) = 0.0;
-	PIODA_AnalogOutputCalVoltage(card_, i, voltage_.at(i));
+	card_ = PIODA_Open(ao_dev.c_str());
+	if(card_ < 0)
+	    return false;
+	
+	if(PIODA_DriverInit(card_))
+	    return false;
+	
+	voltage_.resize(num_channel);
+	
+	for(unsigned int i = 0; i < num_channel; ++i)
+	{
+	    voltage_.at(i) = 0.0;
+	    PIODA_AnalogOutputCalVoltage(card_, i, voltage_.at(i));
+	}
+	
+	init_ = true;
     }
     
     return true;

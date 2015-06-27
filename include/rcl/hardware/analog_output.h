@@ -9,12 +9,17 @@ namespace rcl
     class AnalogOutput
     {
     protected:
+	//check if the class has been initialized. avoid multiple initialization
+	bool init_;
+	
 	//opened device ID
 	int card_;
 	
 	//output voltage
 	std::vector<float> voltage_;
     public:
+	AnalogOutput():init_(false){};
+	
 	/*
 	 * initialize the ao communication interface card
 	 * card: interface card device name
