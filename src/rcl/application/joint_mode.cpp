@@ -35,6 +35,19 @@ void rcl::JointMode::updateSkill()
 	{
 	    if(OTG_result_ != ReflexxesAPI::RML_FINAL_STATE_REACHED)//not yet reach the current_target_
 	    {
+		for(unsigned int i = 0; i < dof; ++i)
+		{
+		    IP_->TargetPositionVector->VecData[i] = current_target_.at(i);
+		    if(targets_.size() > 1)
+		    {
+			IP_->TargetVelocityVector->VecData[i] = speed_ratio_ * via_speed_ratio_ * max_vel[i];
+		    }
+		    else
+		    {
+			IP_->TargetVelocityVector->VecData[i] = 0.0;
+		    }
+		}
+		
 		OTG_result_ = RML_->RMLPosition(*IP_, OP_, Flags_);
 		
 		for(unsigned int i = 0; i < dof; ++i)
@@ -216,8 +229,6 @@ bool rcl::JointMode::pushTargetRel(std::vector< float > target, std::vector< boo
 
 bool rcl::JointMode::resetTargetAbs(std::vector< float > target, std::vector< bool > mask)
 {
-    //TODO check whether the give target is out of the boundary
-    
     //clear the targets queue
     std::queue<int> empty_queue;
     std::swap(targets_, empty_queue);
@@ -242,8 +253,6 @@ bool rcl::JointMode::resetTargetAbs(std::vector< float > target, std::vector< bo
 
 bool rcl::JointMode::resetTargetRel(std::vector< float > target, std::vector< bool > mask)
 {
-    //TODO check whether the give target is out of the boundary
-    
     //clear the targets queue
     std::queue<int> empty_queue;
     std::swap(targets_, empty_queue);
