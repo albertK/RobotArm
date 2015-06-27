@@ -8,31 +8,36 @@ using namespace rcl::Parameters::MotorJoint;
 
 void rcl::MotorJoint::init()
 {
-    mode_ = 'p';
-    
-    target_pos_.resize(dof);
-    target_vel_.resize(dof);
-    target_torq_.resize(dof);
-    
-    current_pos_.resize(dof);
-    current_vel_.resize(dof);
-    current_torq_.resize(dof);
-    
-    accumulator_.resize(dof);
-    diff_.resize(dof);
-    
-    for(unsigned int i = 0; i < dof; ++i)
+    if(!init_)
     {
-	target_pos_.at(i) = home[i];
-	target_vel_.at(i) = 0.0;
-	target_torq_.at(i) = 0.0;
+	mode_ = 'p';
 	
-	current_pos_.at(i) = home[i];
-	current_vel_.at(i) = 0.0;
-	current_torq_.at(i) = 0.0;
+	target_pos_.resize(dof);
+	target_vel_.resize(dof);
+	target_torq_.resize(dof);
 	
-	accumulator_.at(i) = 0.0;
-	diff_.at(i) = 0.0;
+	current_pos_.resize(dof);
+	current_vel_.resize(dof);
+	current_torq_.resize(dof);
+	
+	accumulator_.resize(dof);
+	diff_.resize(dof);
+	
+	for(unsigned int i = 0; i < dof; ++i)
+	{
+	    target_pos_.at(i) = home[i];
+	    target_vel_.at(i) = 0.0;
+	    target_torq_.at(i) = 0.0;
+	    
+	    current_pos_.at(i) = home[i];
+	    current_vel_.at(i) = 0.0;
+	    current_torq_.at(i) = 0.0;
+	    
+	    accumulator_.at(i) = 0.0;
+	    diff_.at(i) = 0.0;
+	}
+	
+	init_ = true;
     }
 }
 

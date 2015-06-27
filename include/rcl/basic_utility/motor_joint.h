@@ -14,6 +14,9 @@ namespace rcl
 	//motor control mode
 	char mode_;
 	
+	//check if the class has been initialized. avoid multiple initialization
+	bool init_;
+	
 	//accumulation of PID integrator
 	std::vector<float> accumulator_;
 	
@@ -31,6 +34,8 @@ namespace rcl
 	std::vector<float> current_acc_;//in deg/sec^2
 	std::vector<float> current_torq_;//in Nm
     public:
+	MotorJoint():init_(false){};
+	
 	/*
 	 * initialize necessary parameters
 	 */
